@@ -1,0 +1,26 @@
+#include <stdio.h>
+
+void lexical_analyzer(const char *input_string, int *whitespace_count, int *newline_count) {
+    *whitespace_count = 0;
+    *newline_count = 0;
+    
+    for (int i = 0; input_string[i] != '\0'; i++) {
+        if (input_string[i] == ' ') {
+            (*whitespace_count)++;
+        } else if (input_string[i] == '\n') {
+            (*newline_count)++;
+        }
+    }
+}
+
+int main() {
+    const char *input_string = "Hello World! \nThis is a lexical analyzer test.\nCounting spaces and newlines.";
+    int whitespaces, newlines;
+    
+    lexical_analyzer(input_string, &whitespaces, &newlines);
+    
+    printf("Number of whitespaces: %d\n", whitespaces);
+    printf("Number of newline characters: %d\n", newlines);
+    
+    return 0;
+}

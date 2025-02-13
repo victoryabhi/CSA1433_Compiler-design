@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX_RULES 10
+#define MAX_LENGTH 100
+
+// Function to find left factoring
+void eliminateLeftFactoring(char rules[MAX_RULES][MAX_LENGTH], int n) {
+    for (int i = 0; i < n; i++) {
+        char prefix[MAX_LENGTH];
+        char *productions[MAX_RULES];
+        int count = 0;
+
+        // Splitting productions
+        char *lhs = strtok(rules[i], "->");
+        char *rhs = strtok(NULL, "->");
+        char temp_rhs[MAX_LENGTH];
+        strcpy(temp_rhs, rhs);
+        char *token = strtok(temp_rhs, "|");
+
+        while (token) {
+            productions[count++] = strdup(token);
+            token = strtok(NULL, "|");
+        }
+
+        // Finding common prefix
+        int prefix_length = strlen(productions[0]);
+        for (int j = 1; j < count; j++) {
+            int k = 0;
+            while (k < prefix_length && productions[j][k] == productions[0][k]) {
+                k++;
+            }
+            prefix_length = k;
+        }
+
+        if (prefix_length > 0) {
+            strncpy(prefix, productions[0], prefix_length);
+            prefix[prefix_length] = '\0';
+
+            printf("%s -> %sX\n", lhs, prefix);
+            printf("X -> ");
+            for (int j = 0; j < count; j++) {
+                if (strcmp(productions[j], prefix) == 0) {
+                    printf("e");
+                } else {
+                    printf("%s", productions[j] + prefix_length);
+                }
+                if (j < count - 1) {
+                    printf(" | ");
+                }
+            }
+            printf("\n");
+        } else {
+            printf("%s -> %s\n", lhs, rhs);
+        }
+    }
+}
+
+int main() {
+    int n;
+    char rules[MAX_RULES][MAX_LENGTH];
+
+    printf("Enter number of grammar rules: ");
+    scanf("%d", &n);
+    getchar(); // Consume newline character
+
+    printf("Enter the grammar rules (e.g., A->ab|ac):\n");
+    for (int i = 0; i < n; i++) {
+        fgets(rules[i], MAX_LENGTH, stdin);
+        rules[i][strcspn(rules[i], "\n")] = 0; // Remove newline character
+    }
+
+    printf("\nGrammar after eliminating left factoring:\n");
+    eliminateLeftFactoring(rules, n);
+
+    return 0;
+}

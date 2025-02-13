@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+void lexical_analyzer(char *input_string) {
+    printf("Recognized operators: ");
+    for (int i = 0; i < strlen(input_string); i++) {
+        if (input_string[i] == '+' || input_string[i] == '-' || 
+            input_string[i] == '*' || input_string[i] == '/') {
+            printf("%c ", input_string[i]);
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    char input_string[] = "a + b - c * d / e";
+    lexical_analyzer(input_string);
+    return 0;
+}

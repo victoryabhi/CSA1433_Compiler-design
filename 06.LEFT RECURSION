@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX 10
+
+void eliminateLeftRecursion(char nonTerminal, char alpha[], char beta[])
+{
+    char newNonTerminal = nonTerminal + 1; // Creating new non-terminal
+    printf("%c -> %s%c'\n", nonTerminal, beta, newNonTerminal);
+    printf("%c' -> %s%c' | e\n", newNonTerminal, alpha, newNonTerminal);
+}
+
+int main()
+{
+    char nonTerminal, alpha[MAX], beta[MAX];
+    printf("Enter the non-terminal: ");
+    scanf(" %c", &nonTerminal);
+    printf("Enter the recursive part (alpha): ");
+    scanf("%s", alpha);
+    printf("Enter the non-recursive part (beta): ");
+    scanf("%s", beta);
+
+    printf("\nGrammar after removing left recursion:\n");
+    eliminateLeftRecursion(nonTerminal, alpha, beta);
+    
+    return 0;
+}
